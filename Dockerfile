@@ -18,7 +18,7 @@ MAINTAINER Huan Wei<huan@harmonycloud.cn>
 
 RUN mkdir -p $GOPATH/src/k8s.io \
  && cd $GOPATH/src/k8s.io \
- && git clone https://github.com/helm/helm
+ && git clone https://github.com/huanwei/helm
 
 RUN go get github.com/Masterminds/glide
 

@@ -12,8 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# huanwei/tiller:v2.9.1
-FROM registry.cn-hangzhou.aliyuncs.com/google_containers/tiller:v2.9.1
+# huanwei/helm-dev
+FROM huanwei/helm-build
 MAINTAINER Huan Wei<huan@harmonycloud.cn>
 
-COPY ./bin/tiller /tiller
+#COPY cmd/helm/upgrade.go $GOPATH/src/k8s.io/helm/cmd/helm/upgrade.go
+COPY pkg/tiller/release_update.go $GOPATH/src/k8s.io/helm/pkg/tiller/release_update.go
+COPY pkg/tiller/release_install.go $GOPATH/src/k8s.io/helm/pkg/tiller/release_install.go
+RUN cd $GOPATH/src/k8s.io/helm \
+ && make build \
+ && GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -v -i -o bin/tiller k8s.io/helm/cmd/tiller

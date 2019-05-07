@@ -12,8 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# huanwei/tiller:v2.9.1
-FROM registry.cn-hangzhou.aliyuncs.com/google_containers/tiller:v2.9.1
+# huanwei/helm-build
+FROM golang
 MAINTAINER Huan Wei<huan@harmonycloud.cn>
 
-COPY ./bin/tiller /tiller
+RUN mkdir -p $GOPATH/src/k8s.io \
+ && cd $GOPATH/src/k8s.io \
+ && git clone https://github.com/huanwei/helm
+
+RUN go get github.com/Masterminds/glide
+
+RUN cd $GOPATH/src/k8s.io/helm \
+ && git checkout v2.9.1_hc \
+ && make bootstrap
